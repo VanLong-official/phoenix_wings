@@ -156,7 +156,8 @@ class PhoenixChannel {
         new PhoenixPush(this, PhoenixChannelEvents.leave, {}, timeout);
 
     leavePush
-        .receive("ok", onCloseCallback as dynamic Function(Map<dynamic, dynamic>?))
+        .receive(
+            "ok", onCloseCallback as dynamic Function(Map<dynamic, dynamic>?))
         .receive("timeout", onCloseCallback);
 
     leavePush.send();
@@ -221,7 +222,7 @@ class PhoenixChannel {
   void off(event, [ref]) {
     _bindings = _bindings
         .where((binding) =>
-            binding.event != event && (ref == null || ref == binding.ref))
+            binding.event != event || ![binding.ref, null].contains(ref))
         .toList();
   }
 
